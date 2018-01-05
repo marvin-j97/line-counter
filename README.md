@@ -11,4 +11,5 @@ Lightweight Windows Forms C# Line Counter Tool
 "*.xyz" is one extension.
 
 Chain extensions by using '|'.:
+
 e.g. "\*.xyz|*.cs|\*.txt"
