@@ -69,8 +69,9 @@ namespace LineCounter
     {
       CountResult cr;
       cr.lineCount = 0;
-
-      string[] searchPatterns = searchPattern.Split('|');
+      cr.fileCount = 0;
+      
+      List<string> searchPatterns = new List<string>(searchPattern.Split('|'));
       List<string> files = new List<string>();
 
       foreach (string sp in searchPatterns)
