@@ -10,6 +10,6 @@ Lightweight Windows Forms C# Line Counter Tool
 # File extension format
 "*.xyz" is one extension.
 
-Chain extensions by using '|'.:
+Chain extensions by using '|'.
 
 e.g. "\*.xyz|*.cs|\*.txt"
