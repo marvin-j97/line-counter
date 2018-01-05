@@ -62,7 +62,14 @@ namespace LineCounter
       }
 
       CountResult cr = ProcessDirectory(txtFileFormats.Text, searchOption);
-      txtLineCount.Text = String.Format($"{cr.lineCount} lines in {cr.fileCount} files");
+      if (cr.fileCount != -1)
+      {
+        txtLineCount.Text = String.Format($"{cr.lineCount} lines in {cr.fileCount} files");
+      }
+      else
+      {
+        txtLineCount.Text = "Invalid extension formatting!";
+      }
     }
 
     private CountResult ProcessDirectory(string searchPattern, SearchOption searchOption)
@@ -71,12 +78,20 @@ namespace LineCounter
       cr.lineCount = 0;
       cr.fileCount = 0;
       
-      List<string> searchPatterns = new List<string>(searchPattern.Split('|'));
+      string[] searchPatterns = searchPattern.Split('|');
       List<string> files = new List<string>();
 
       foreach (string sp in searchPatterns)
       {
-        files.AddRange(Directory.GetFiles(directory, sp, searchOption));
+        try
+        {
+          files.AddRange(Directory.GetFiles(directory, sp, searchOption));
+        }
+        catch(Exception e)
+        {
+          cr.fileCount = -1;
+          return cr;
+        }
       }
 
       cr.fileCount = files.Count;
