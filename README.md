@@ -12,4 +12,4 @@ Lightweight Windows Forms C# Line Counter Tool
 
 Chain extensions by using '|'
 
-e.g. "*.xyz|*.cs|*.txt"
+e.g. "\*.xyz|*.cs|\*.txt"
