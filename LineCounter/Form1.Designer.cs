@@ -35,6 +35,8 @@
       this.txtLineCount = new System.Windows.Forms.Label();
       this.cbSubFolders = new System.Windows.Forms.CheckBox();
       this.txtFileFormats = new System.Windows.Forms.TextBox();
+      this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+      this.progressBar = new System.Windows.Forms.ProgressBar();
       this.SuspendLayout();
       // 
       // btnFolderSelector
@@ -94,11 +96,22 @@
       this.txtFileFormats.TabIndex = 6;
       this.txtFileFormats.Text = "*.cpp|*.c|*.h|*.cs|*.py";
       // 
+      // progressBar
+      // 
+      this.progressBar.Location = new System.Drawing.Point(126, 75);
+      this.progressBar.MarqueeAnimationSpeed = 5;
+      this.progressBar.Name = "progressBar";
+      this.progressBar.Size = new System.Drawing.Size(145, 17);
+      this.progressBar.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
+      this.progressBar.TabIndex = 7;
+      this.progressBar.Visible = false;
+      // 
       // Form1
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.ClientSize = new System.Drawing.Size(284, 138);
+      this.Controls.Add(this.progressBar);
       this.Controls.Add(this.txtFileFormats);
       this.Controls.Add(this.cbSubFolders);
       this.Controls.Add(this.txtLineCount);
@@ -124,6 +137,8 @@
     private System.Windows.Forms.Label txtLineCount;
     private System.Windows.Forms.CheckBox cbSubFolders;
     private System.Windows.Forms.TextBox txtFileFormats;
+    private System.ComponentModel.BackgroundWorker backgroundWorker1;
+    private System.Windows.Forms.ProgressBar progressBar;
   }
 }
 
