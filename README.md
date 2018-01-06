@@ -13,3 +13,5 @@ Lightweight Windows Forms C# Line Counter Tool
 Chain extensions by using '|'.
 
 e.g. "\*.xyz|*.cs|\*.txt"
+
+# [Download](https://github.com/dotvirus/line-counter/releases)
