@@ -116,6 +116,9 @@ namespace LineCounter
 
     private void ProcessDirectory(string searchPattern)
     {
+      if (backgroundWorker1.IsBusy)
+        return;
+
       // Reset stuff
       countResult.lineCount = 0;
       countResult.fileCount = 0;
@@ -126,6 +129,11 @@ namespace LineCounter
       progressBar.Visible = true;
       txtLineCount.Text = "Counting...";
       backgroundWorker1.RunWorkerAsync();
+    }
+
+    private void txtSelectedFolder_TextChanged(object sender, EventArgs e)
+    {
+      setFolder(txtSelectedFolder.Text);
     }
   }
 }

@@ -53,9 +53,9 @@
       // 
       this.txtSelectedFolder.Location = new System.Drawing.Point(12, 15);
       this.txtSelectedFolder.Name = "txtSelectedFolder";
-      this.txtSelectedFolder.ReadOnly = true;
       this.txtSelectedFolder.Size = new System.Drawing.Size(179, 20);
       this.txtSelectedFolder.TabIndex = 2;
+      this.txtSelectedFolder.TextChanged += new System.EventHandler(this.txtSelectedFolder_TextChanged);
       // 
       // btnCount
       // 
