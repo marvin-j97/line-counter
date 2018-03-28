@@ -79,7 +79,7 @@ namespace LineCounter
         {
             for (var i = 0; i < searchPatterns.Count; i++)
             {
-                worker.ReportProgress(0, "aLooking for files");
+                worker.ReportProgress(0, "Looking for files");
                 try
                 {
                     foreach (var file in GetFiles(directory, searchPatterns[i], searchOption))
@@ -122,9 +122,9 @@ namespace LineCounter
 
         private void Worker_Progress(object sender, ProgressChangedEventArgs e)
         {
-            if (e.UserState.ToString().Substring(0, 1) == "a")
+            if (e.UserState.ToString() == "Looking for files")
             {
-                TxtLineCount.Text = e.UserState.ToString().Substring(1);
+              TxtLineCount.Text = e.UserState.ToString();
             }
             else
             {
