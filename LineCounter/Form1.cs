@@ -79,7 +79,7 @@ namespace LineCounter
         {
             for (var i = 0; i < searchPatterns.Count; i++)
             {
-                worker.ReportProgress(0, "Looking for files");
+                worker.ReportProgress(0, "aLooking for files");
                 try
                 {
                     foreach (var file in GetFiles(directory, searchPatterns[i], searchOption))
