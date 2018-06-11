@@ -38,39 +38,21 @@ namespace LineCounter
 
         static IEnumerable<string> GetFiles(string dir, string searchPattern, SearchOption searchOption)
         {
-            Queue<string> queue = new Queue<string>();
-            queue.Enqueue(dir);
-            while (queue.Count > 0)
+            string[] foundFiles = null;
+            try
             {
-                dir = queue.Dequeue();
-                try
-                {
-                    foreach (var subDir in Directory.GetDirectories(dir))
-                    {
-                        queue.Enqueue(subDir);
-                    }
-                }
-                catch (Exception)
-                {
+                foundFiles = Directory.GetFiles(dir, searchPattern, searchOption);
+            }
+            catch (Exception)
+            {
                     
-                }
+            }
                 
-                string[] foundFiles = null;
-                try
+            if (foundFiles != null)
+            {
+                for (int i = 0; i < foundFiles.Length; i++)
                 {
-                    foundFiles = Directory.GetFiles(dir, searchPattern, searchOption);
-                }
-                catch (Exception)
-                {
-                    
-                }
-                
-                if (foundFiles != null)
-                {
-                    for (int i = 0; i < foundFiles.Length; i++)
-                    {
-                        yield return foundFiles[i];
-                    }
+                    yield return foundFiles[i];
                 }
             }
         }
