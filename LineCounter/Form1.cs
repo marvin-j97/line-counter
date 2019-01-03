@@ -15,12 +15,12 @@ namespace LineCounter
         private List<string> searchPatterns;
         private SearchOption searchOption;
         private CountResult countResult;
-        private BackgroundWorker worker;
+        private readonly BackgroundWorker worker;
 
-        public struct CountResult
+        private struct CountResult
         {
-            public int lineCount;
-            public int fileCount;
+            public int LineCount;
+            public int FileCount;
         }
 
         public Form1()
@@ -36,35 +36,33 @@ namespace LineCounter
             worker.ProgressChanged += Worker_Progress;
         }
 
-        static IEnumerable<string> GetFiles(string dir, string searchPattern, SearchOption searchOption)
+        private static IEnumerable<string> GetFiles(string dir, string pattern, SearchOption option)
         {
             string[] foundFiles = null;
             try
             {
-                foundFiles = Directory.GetFiles(dir, searchPattern, searchOption);
+                foundFiles = Directory.GetFiles(dir, pattern, option);
             }
             catch (Exception)
             {
-                    
+                // ignored
             }
-                
-            if (foundFiles != null)
+
+            if (foundFiles == null) yield break;
+            foreach (var t in foundFiles)
             {
-                for (int i = 0; i < foundFiles.Length; i++)
-                {
-                    yield return foundFiles[i];
-                }
+                yield return t;
             }
         }
 
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
-            for (var i = 0; i < searchPatterns.Count; i++)
+            foreach (var pattern in searchPatterns)
             {
                 worker.ReportProgress(0, "Looking for files");
                 try
                 {
-                    foreach (var file in GetFiles(directory, searchPatterns[i], searchOption))
+                    foreach (var file in GetFiles(directory, pattern, searchOption))
                     {
                         files.Add(file);
                     }
@@ -77,9 +75,9 @@ namespace LineCounter
                 catch (Exception)
                 {
                     // severe exception
-                    countResult.fileCount = -1;
+                    countResult.FileCount = -1;
                     worker.CancelAsync();
-                }                
+                }
             }
 
             if (worker.CancellationPending)
@@ -88,7 +86,7 @@ namespace LineCounter
                 return;
             }
 
-            var numberOfFiles = countResult.fileCount = files.Count;
+            var numberOfFiles = countResult.FileCount = files.Count;
 
             for (var i = 0; i < numberOfFiles; i++)
             {
@@ -97,8 +95,8 @@ namespace LineCounter
                     e.Cancel = true;
                     return;
                 }
-                countResult.lineCount += File.ReadLines(files[i]).Count();
-                worker.ReportProgress(Convert.ToInt32(((double)i / numberOfFiles) * 100), i + ","+numberOfFiles);
+                countResult.LineCount += File.ReadLines(files[i]).Count();
+                worker.ReportProgress(Convert.ToInt32((double)i / numberOfFiles * 100), i + ","+numberOfFiles);
             }
         }
 
@@ -111,7 +109,7 @@ namespace LineCounter
             else
             {
                 var info = e.UserState.ToString().Split(',');
-                TxtLineCount.Text = $"Counting {info[0]} out of {info[1]} files";
+                TxtLineCount.Text = $@"Counting {info[0]} out of {info[1]} files";
                 ProgressBar.Value = e.ProgressPercentage;
             }
         }
@@ -121,13 +119,13 @@ namespace LineCounter
             ProgressBar.Visible = false;
             BtnAbort.Visible = false;
 
-            if (countResult.fileCount != -1)
+            if (countResult.FileCount != -1)
             {
-                TxtLineCount.Text = String.Format($"{countResult.lineCount} lines in {countResult.fileCount} files");
+                TxtLineCount.Text = string.Format($"{countResult.LineCount} lines in {countResult.FileCount} files");
             }
             else
             {
-                TxtLineCount.Text = "Invalid extension formatting!";
+                TxtLineCount.Text = @"Invalid extension formatting!";
             }
         }
 
@@ -151,32 +149,25 @@ namespace LineCounter
 
         private void BtnCount_Click(object sender, EventArgs e)
         {
-            if (CbSubFolders.Checked)
-            {
-                searchOption = SearchOption.AllDirectories;
-            }
-            else
-            {
-                searchOption = SearchOption.TopDirectoryOnly;
-            }
+            searchOption = CbSubFolders.Checked ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
             ProcessDirectory(TxtFileFormats.Text);
         }
 
-        private void ProcessDirectory(string searchPattern)
+        private void ProcessDirectory(string pattern)
         {
             if (worker.IsBusy)
             {
                 return;
             }
 
-            countResult.lineCount = 0;
-            countResult.fileCount = 0;
+            countResult.LineCount = 0;
+            countResult.FileCount = 0;
             ProgressBar.Value = 0;
-            searchPatterns = searchPattern.Split('|').ToList();
+            searchPatterns = pattern.Split('|').ToList();
             files = new List<string>();
             ProgressBar.Visible = true;
             BtnAbort.Visible = true;
-            TxtLineCount.Text = "Counting...";
+            TxtLineCount.Text = @"Counting...";
             worker.RunWorkerAsync();
         }
 
